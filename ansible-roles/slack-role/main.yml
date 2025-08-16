@@ -8,8 +8,8 @@
 
 - name: Send HTML file to Slack
   community.general.slack:
-    token: "{{ xoxb-9345134279426-9364366754518-vCYJgwWKSvBDXtUFso8pQTYH }}"
-    channel: "#ansible-channel"
+    token: "api token "
+    channel: "channel-name"
     msg: "Patching report is attached."
     attachments:
       - text: "{{ lookup('file', '/tmp/patching_report.html') }}"
