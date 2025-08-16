@@ -1,0 +1,4 @@
+---
+- name: Add server back to load balancer
+  debug:
+    msg: "Pretend we are adding {{ inventory_hostname }} back to LB"

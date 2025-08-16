@@ -1,0 +1,23 @@
+---
+# Role: Precheck
+# This role gathers basic system info before patching.
+
+- name: Print start message
+  debug:
+    msg: "Starting precheck for {{ inventory_hostname }}"
+
+- name: Get system uptime
+  command: uptime
+  register: uptime_result
+
+- name: Show uptime
+  debug:
+    var: uptime_result.stdout
+
+- name: Get disk usage
+  command: df -h
+  register: disk_result
+
+- name: Show disk usage
+  debug:
+    var: disk_result.stdout

@@ -1,0 +1,9 @@
+---
+# Role: Load Balancer Update
+# This role removes/attaches servers from/to the load balancer during patching.
+
+- name: Print start message
+  debug:
+    msg: "Updating load balancer for {{ inventory_hostname }}"
+
+

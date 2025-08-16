@@ -1,0 +1,54 @@
+---
+# This is our main Ansible playbook that calls all roles in sequence.
+
+# 1. Precheck tasks - one server at a time
+- name: Run Precheck tasks before doing anything
+  hosts: patchhosts
+  serial: 1   # One server at a time
+  become: yes
+  roles:
+    - precheck
+
+# 2. Detach ALL nodes from the load balancer before patching
+- name: Detach all nodes from Load Balancer
+  hosts: lb
+  become: yes
+  roles:
+    - lb-detach
+
+# 3. Apply patches - one server at a time
+- name: Apply patches one server at a time
+  hosts: all
+  become: yes
+  serial: 1
+  roles:
+    - patching
+
+# 4. Reboot - one server at a time
+- name: Reboot servers if required
+  hosts: all
+  serial: 1
+  become: yes
+  roles:
+    - reboot
+
+# 5. Attach ALL nodes back to the load balancer after patching & reboot
+- name: Attach all nodes to Load Balancer
+  hosts: lb
+  become: yes
+  roles:
+    - lb-attach
+
+
+# 6. Collect and show results
+- name: Collect and show results
+  hosts: all
+  become: yes
+  roles:
+    - result
+# 7. Send results to Slack
+- name: Send results to Slack
+  hosts: localhost
+  roles:
+    - slack_notification
+

@@ -1,0 +1,21 @@
+---
+# Role: Patching
+# This role updates all system packages on Ubuntu.
+
+- name: Print start message
+  debug:
+    msg: "Starting mandatory patching for {{ inventory_hostname }} (Ubuntu only)"
+
+- name: Ensure system is Ubuntu
+  fail:
+    msg: "This patching role is only supported on Ubuntu systems!"
+  when: ansible_distribution != "Ubuntu"
+
+- name: Update package cache and upgrade all packages (Ubuntu)
+  apt:
+    update_cache: yes
+    upgrade: dist
+    force_apt_get: yes
+    autoremove: yes
+    autoclean: yes
+  become: yes

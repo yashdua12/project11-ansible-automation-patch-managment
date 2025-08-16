@@ -1,0 +1,15 @@
+---
+# Role: Reboot
+# This role reboots the server after patching.
+
+- name: Print start message
+  debug:
+    msg: "Rebooting {{ inventory_hostname }}"
+
+- name: Reboot server
+  reboot:
+    reboot_timeout: 600
+
+- name: Wait for server to come back online
+  wait_for_connection:
+    timeout: 300 

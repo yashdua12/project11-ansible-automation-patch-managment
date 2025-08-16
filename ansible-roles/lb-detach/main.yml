@@ -1,0 +1,4 @@
+---
+- name: Remove server from load balancer
+  debug:
+    msg: "Pretend we are removing {{ inventory_hostname }} from LB"

@@ -1,0 +1,24 @@
+---
+# Role: Result
+# This role gathers patching results into an HTML file.
+
+- name: Print start message
+  debug:
+    msg: "Collecting results for {{ inventory_hostname }}"
+
+- name: Get package upgrade history
+  command: grep "upgrade" /var/log/dpkg.log
+  register: upgrade_history
+  ignore_errors: yes
+
+- name: Save result to HTML
+  copy:
+    dest: /tmp/patching_report.html
+    content: |
+      <html>
+      <head><title>Patching Report</title></head>
+      <body>
+      <h2>Patching Report for {{ inventory_hostname }}</h2>
+      <pre>{{ upgrade_history.stdout }}</pre>
+      </body>
+      </html>
